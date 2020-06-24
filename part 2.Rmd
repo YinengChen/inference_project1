@@ -1,0 +1,79 @@
+---
+title: "Part 2"
+author: "Yineng Chen"
+date: "6/24/2020"
+output: 
+  html_document:
+    keep_md: TRUE
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load data and exploratory data analyses
+
+```{r}
+data("ToothGrowth")
+
+table(ToothGrowth$supp)
+table(ToothGrowth$dose)
+
+boxplot(len ~ dose, data = ToothGrowth, col = "lightgray")
+boxplot(len ~ supp, data = ToothGrowth, col = "lightgray")
+```
+
+
+###  Summary
+
+```{r}
+summary(ToothGrowth)
+```
+
+### compare tooth growth by supp and dose
+
+##### By supp
+
+```{r}
+supp1 = subset(ToothGrowth, ToothGrowth$supp =="OJ")
+supp2 = subset(ToothGrowth, ToothGrowth$supp =="VC")
+
+t = t.test(supp1$len,supp2$len)
+
+mean1 = mean(supp1$len)
+sd1 = sd(supp1$len)
+
+mean2 = mean(supp2$len)
+sd2 = sd(supp2$len)
+
+p = t$p.value
+ci = t$conf.int
+ts = t$statistic
+
+out3 = cbind(mean1,mean2,p,ci[1],ci[2])
+colnames(out3) = c("OJ","VC","p value","lower limit","upper limit")
+out3
+```
+
+**conclusion:**
+
+With a significant level of 5%, the mean len in group OJ is not significantly different from group VC ( t = `r ts`, p value = `r p`)
+
+##### By dose
+
+```{r}
+alpha = 0.05
+alpha_adj = alpha/choose(3,2)
+```
+
+```{r}
+pt = pairwise.t.test(ToothGrowth$len, ToothGrowth$dose, p.adj='bonferroni')
+
+pt$p.value
+```
+
+**conclusion:**
+
+Adjusting p values with bonferroni medhod, the results shows that there are difference in the mean of len between Dose 0.5 vs. Dose 1, Dose 0.5 vs. Dose 2, and Dose 1 vs. Dose 2.
