@@ -9,9 +9,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+
 
 ## Part 1: Simulation Exercise
 
@@ -23,7 +21,8 @@ In this project, I will investigate the exponential distribution and compare it 
 
 Setting lamnda = 0.2, I take 40 semples from the exponential distribution, and I resample 1000 times.
 
-```{r}
+
+```r
 set.seed(3)
 lambda = 0.2
 
@@ -32,7 +31,6 @@ mns = NULL
 for (i in 1:1000) {
   mns = c(mns,mean(rexp(40,0.2)))
 } 
-
 ```
 
 ### Sample means vs. Theoretical Mean
@@ -41,8 +39,8 @@ In this part, we compare the mean of the averages of 40 exponentials obtained by
 
 According to CLT, the mean of the simulation should equals to the mean of exponential distribution. The mean of exponential distribution is 1/lambda 
 
-```{r}
 
+```r
 mean_sample = mean(mns)
 mean_theo = 1/lambda
 
@@ -50,11 +48,20 @@ out = cbind(mean_theo,mean_sample)
 colnames(out) = c("theoratical","simulatiom")
 rownames(out) = "mean"
 out
+```
 
+```
+##      theoratical simulatiom
+## mean           5    4.98662
+```
+
+```r
 hist(mns, xlab = "means", main = "Simulation Exponential distribution")
 abline(v = mean_sample, col = "red")
 abline(v = mean_sample, col = "blue")
 ```
+
+![](Part-1_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
 
 ### Sample Variance versus Theoretical Variance: 
 
@@ -63,7 +70,8 @@ In this part, we compare the variance of the averages of 40 exponentials obtaine
 According to CLT, the variance of means is $S^2_{sample} = \frac{\sigma^2}{n}$
 The variacne of exponential distribution ($\sigma^2$) is 1/lambda
 
-```{r}
+
+```r
 var_sample = var(mns)
 var_theo = (1/lambda)^2/40
 
@@ -73,24 +81,34 @@ rownames(out2) = "variance"
 out2
 ```
 
+```
+##          theoratical simulatiom
+## variance       0.625  0.6316789
+```
+
 ### Distribution
 
 The following graph shows the distribution of the sample means. qqplot indicate a normal distribution.
 
-```{r}
 
+```r
 hist(mns,breaks=40,prob=T,main = "Distribution of sample means",xlab = "means",ylab="density")
 
 #density
 xfit <- seq(min(mns), max(mns), length=100)
 yfit <- dnorm(xfit, mean=1/lambda, sd=(1/lambda/sqrt(40)))
 lines(xfit, yfit, pch=22, col="black", lty=5)
+```
 
+![](Part-1_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
 
+```r
 # compare the distribution of averages of 40 exponentials to a normal distribution with qqplot
 qqnorm(mns)
 qqline(mns, col = 2)
 ```
+
+![](Part-1_files/figure-html/unnamed-chunk-4-2.png)<!-- -->
 
 
 
