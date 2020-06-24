@@ -58,7 +58,7 @@ out
 ```r
 hist(mns, xlab = "means", main = "Simulation Exponential distribution")
 abline(v = mean_sample, col = "red")
-abline(v = mean_sample, col = "blue")
+abline(v = mean_theo, col = "blue")
 ```
 
 ![](Part-1_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
